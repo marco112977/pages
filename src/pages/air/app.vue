@@ -1,3 +1,4 @@
+
 <template>
   <div>
     <section>[ - Docs.vue ] is created!</section>
@@ -15,3 +16,10 @@ export default {
   }
 }
 </script>
+<style lang="scss">
+#nav {
+  a{
+    color: $theme
+  }
+}
+</style>

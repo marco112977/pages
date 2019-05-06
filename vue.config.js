@@ -1,11 +1,11 @@
 const fs = require('fs')
-const glob = require("glob")
+const glob = require('glob')
 
 // 简单学习 glob https://www.cnblogs.com/liulangmao/p/4552339.html
 const pages = {}
 let entries
 try {
-  entries = glob('src/pages/*/main.js', {sync: true})
+  entries = glob('src/pages/*/main.js', { sync: true })
 } catch (err) {
   entries = []
   throw err
@@ -15,7 +15,7 @@ entries.forEach((file) => {
   const pageName = fileSplit[2]
   let pageHtml = fileSplit.slice(0, 3).join('/') + '/index.html'
   if (!fs.existsSync(pageHtml)) {
-    pageHtml = fileSplit.slice(0, 2).join('/') + '/_default.html'
+    pageHtml = fileSplit.slice(0, 2).join('/') + '/default.html'
   }
   pages[pageName] = {
     entry: file,
@@ -26,7 +26,7 @@ entries.forEach((file) => {
 
 module.exports = {
   pages,
-  baseUrl: '/',
+  publicPath: '/',
   outputDir: 'dist',
   lintOnSave: true,
   chainWebpack: (config) => {
@@ -37,7 +37,13 @@ module.exports = {
   css: {
     extract: true,
     sourceMap: false,
-    loaderOptions: {}
+    loaderOptions: {
+      sass: {
+        data: `
+          @import "@/common/styles/_theme.scss";
+        `
+      }
+    }
   },
   parallel: require('os').cpus().length > 1,
   pluginOptions: {},
